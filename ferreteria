@@ -1,0 +1,691 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 21-05-2021 a las 23:40:06
+-- Versión del servidor: 10.1.32-MariaDB
+-- Versión de PHP: 7.2.5
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `ferreteria`
+--
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarCompra` (`tipo` VARCHAR(20), `proveedor` INT, `fecha` VARCHAR(45), `monto` DECIMAL(8,1), `usuario` INT)  begin
+declare cuenta int;
+declare mat char(6);
+select ifnull(max(bfCompra),0)+1 into cuenta from bfCompra;
+set mat=Lpad(cuenta,6,'0');
+insert into bfcompra values(mat,tipo,proveedor,fecha,monto,usuario);
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarCotizacion` (`cliente` INT, `fecha` VARCHAR(45), `monto` DECIMAL(8,1), `usuario` INT)  begin
+declare cuenta int;
+declare mat char(9);
+select ifnull(max(cotizaciond),0)+1 into cuenta from cotizaciond;
+set mat=Lpad(cuenta,9,'0');
+insert into cotizaciond values(mat,cliente,fecha,monto,usuario);
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarVenta` (IN `tipo` VARCHAR(20), IN `cliente` INT, IN `fecha` VARCHAR(45), IN `monto` DECIMAL(8,1), IN `usuario` INT, IN `metodo` VARCHAR(20), IN `pago` DOUBLE)  begin
+declare cuenta int;
+declare mat char(10);
+select ifnull(max(bfVenta),0)+1 into cuenta from bfVenta;
+set mat=Lpad(cuenta,10,'0');
+insert into bfVenta values(mat,tipo,cliente,fecha,monto,usuario,metodo,pago);
+end$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `almacen`
+--
+
+CREATE TABLE `almacen` (
+  `almacen` int(11) NOT NULL,
+  `tpAlmcen` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `fecha` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `origen` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `observacion` int(11) DEFAULT NULL,
+  `producto_producto` int(11) NOT NULL,
+  `usuario_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `almacen`
+--
+
+INSERT INTO `almacen` (`almacen`, `tpAlmcen`, `fecha`, `origen`, `observacion`, `producto_producto`, `usuario_usuario`) VALUES
+(70, 'Salida', '2021-04-25 14:12:56', 'Venta', 1, 131, 2021001),
+(71, 'Salida', '2021-04-25 14:12:56', 'Venta', 2, 130, 2021001),
+(72, 'Salida', '2021-04-25 18:53:43', 'Venta', 1, 134, 2021001),
+(73, 'Salida', '2021-04-25 18:53:43', 'Venta', 1, 131, 2021001),
+(74, 'Salida', '2021-04-25 19:06:37', 'Venta', 1, 134, 2021001),
+(75, 'Salida', '2021-04-25 19:06:37', 'Venta', 2, 135, 2021001),
+(76, 'Salida', '2021-04-25 19:08:00', 'Venta', 2, 135, 2021001),
+(77, 'Salida', '2021-04-25 19:08:00', 'Venta', 1, 134, 2021001),
+(78, 'Salida', '2021-04-25 19:08:47', 'Venta', 2, 135, 2021001),
+(79, 'Salida', '2021-04-25 19:08:47', 'Venta', 1, 134, 2021001),
+(80, 'Salida', '2021-04-25 19:26:47', 'Venta', 1, 133, 2021001),
+(81, 'Salida', '2021-04-25 19:29:04', 'Venta', 1, 135, 2021001),
+(82, 'Salida', '2021-04-25 19:29:40', 'Venta', 1, 134, 2021001),
+(83, 'Salida', '2021-04-25 19:32:54', 'Venta', 1, 135, 2021001),
+(84, 'Salida', '2021-04-25 19:33:22', 'Venta', 2, 135, 2021001),
+(85, 'Salida', '2021-04-25 21:10:02', 'Venta', 1, 135, 2021001),
+(86, 'Salida', '2021-04-25 21:15:12', 'Venta', 1, 135, 2021001),
+(87, 'Salida', '2021-04-25 21:32:20', 'Venta', 1, 130, 2021001),
+(88, 'Salida', '2021-04-25 21:36:00', 'Venta', 2, 130, 2021001),
+(89, 'Salida', '2021-04-25 21:49:04', 'Venta', 2, 131, 2021001),
+(90, 'Salida', '2021-05-03 14:02:37', 'Venta', 1, 130, 2021001),
+(91, 'Salida', '2021-05-03 14:02:37', 'Venta', 2, 132, 2021001),
+(92, 'Salida', '2021-05-06 14:21:12', 'Venta', 1, 130, 2021001),
+(93, 'Salida', '2021-05-06 14:24:11', 'Venta', 2, 131, 2021001),
+(94, 'Salida', '2021-05-06 14:24:11', 'Venta', 1, 134, 2021001),
+(95, 'Salida', '2021-05-06 14:25:55', 'Venta', 1, 132, 2021001),
+(96, 'Salida', '2021-05-06 16:18:33', 'Venta', 1, 139, 2021001),
+(97, 'Salida', '2021-05-06 16:18:33', 'Venta', 2, 131, 2021001),
+(98, 'Entrada', '2021-05-06 16:22:30', 'Compra', 5, 139, 2021001),
+(99, 'Entrada', '2021-05-06 16:22:30', 'Compra', 10, 134, 2021001),
+(100, 'Salida', '2021-05-11 21:17:42', 'Venta', 1, 130, 2021001),
+(101, 'Entrada', '2021-05-11 21:42:12', 'Compra', 1, 131, 2021001),
+(102, 'Entrada', '2021-05-11 21:42:12', 'Compra', 1, 133, 2021001),
+(103, 'Entrada', '2021-05-11 21:42:12', 'Compra', 1, 134, 2021001),
+(104, 'Entrada', '2021-05-11 23:57:41', 'Compra', 1, 131, 2021001),
+(105, 'Entrada', '2021-05-11 23:57:41', 'Compra', 1, 133, 2021001),
+(106, 'Entrada', '2021-05-11 23:57:41', 'Compra', 1, 133, 2021001);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `bfcompra`
+--
+
+CREATE TABLE `bfcompra` (
+  `bfCompra` char(6) NOT NULL,
+  `tipo` varchar(20) NOT NULL,
+  `proveedor` int(11) NOT NULL,
+  `fecha` varchar(45) NOT NULL,
+  `monto` double NOT NULL,
+  `usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `bfventa`
+--
+
+CREATE TABLE `bfventa` (
+  `bfVenta` char(10) NOT NULL,
+  `tipo` varchar(20) NOT NULL,
+  `cliente` int(11) NOT NULL,
+  `fecha` varchar(45) NOT NULL,
+  `monto` double NOT NULL,
+  `usuario` int(11) NOT NULL,
+  `metodo` varchar(20) NOT NULL,
+  `pago` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `bfventa`
+--
+
+INSERT INTO `bfventa` (`bfVenta`, `tipo`, `cliente`, `fecha`, `monto`, `usuario`, `metodo`, `pago`) VALUES
+('0000000007', 'Ticket', 2021000004, '2021-04-25 21:10:02', 25, 2021001, 'Efectivo', 0),
+('0000000008', 'Ticket', 2021000004, '2021-04-25 21:15:12', 25, 2021001, 'Efectivo', 100),
+('0000000009', 'Ticket', 2021000004, '2021-04-25 21:32:20', 18, 2021001, 'Tarjeta', 50),
+('0000000010', 'Ticket', 2021000004, '2021-04-25 21:36:00', 36, 2021001, 'Tarjeta', 50),
+('0000000011', 'Ticket', 2021000004, '2021-04-25 21:49:04', 72, 2021001, 'Efectivo', 100),
+('0000000012', 'Ticket', 2021000004, '2021-05-06 14:21:12', 18, 2021001, 'Efectivo', 100),
+('0000000013', 'Boleta', 2021000005, '2021-05-06 14:24:11', 80.5, 2021001, 'Efectivo', 200),
+('0000000014', 'Factura', 2021000006, '2021-05-06 14:25:55', 30, 2021001, 'Tarjeta', 50),
+('0000000015', 'Ticket', 2021000004, '2021-05-06 16:18:33', 107, 2021001, 'Pendiente', 50),
+('0000000016', 'Ticket', 2021000004, '2021-05-11 21:17:42', 18, 2021001, 'Efectivo', 23);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cajachica`
+--
+
+CREATE TABLE `cajachica` (
+  `cajaChica` int(11) NOT NULL,
+  `descripcion` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `tpcjChica` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `monto` double DEFAULT NULL,
+  `fecha` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `usuario` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `cajachica`
+--
+
+INSERT INTO `cajachica` (`cajaChica`, `descripcion`, `tpcjChica`, `monto`, `fecha`, `usuario`) VALUES
+(1, 'caja', 'Ingreso', 100, '2021-03-16 14:46:41', 2021001),
+(2, 'Bolsas', 'Salida', 15, '2021-04-18 21:05:43', 2021001),
+(3, 'Flete', 'Salida', 10, '2021-04-21 10:17:57', 2021001);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cliente`
+--
+
+CREATE TABLE `cliente` (
+  `cliente` int(11) NOT NULL,
+  `nombreCliente` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `apellidoPaterno` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `apellidoMaterno` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `direccionCLiente` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `sexo` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `dni` varchar(8) COLLATE utf8_bin DEFAULT NULL,
+  `ruc` varchar(11) COLLATE utf8_bin DEFAULT NULL,
+  `celular` int(11) DEFAULT NULL,
+  `telefono` int(11) DEFAULT NULL,
+  `distrito_distrito` int(11) NOT NULL,
+  `razonSocialC` varchar(45) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`cliente`, `nombreCliente`, `apellidoPaterno`, `apellidoMaterno`, `direccionCLiente`, `sexo`, `dni`, `ruc`, `celular`, `telefono`, `distrito_distrito`, `razonSocialC`) VALUES
+(2021000004, 'Cliente-Varios', '', '', '', 'Otros', '', '', 0, 0, 111, ''),
+(2021000005, 'Escoth', 'Huerta', 'Lizarraga', '', 'Masculino', '74600190', '', 0, 0, 111, ''),
+(2021000006, 'asociacion HL', '', '', '', 'Otros', '', '21416521411', 0, 0, 100, 'asociacion HL');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compra`
+--
+
+CREATE TABLE `compra` (
+  `ncompra` int(11) NOT NULL,
+  `tpCompra` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `fecha` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `estado` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `producto_producto` int(11) DEFAULT NULL,
+  `usuario_usuario` int(11) NOT NULL,
+  `proveedor_proveedor` int(11) NOT NULL,
+  `comprobante` varchar(20) COLLATE utf8_bin NOT NULL,
+  `observacion` varchar(30) COLLATE utf8_bin NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `bfCompra` char(6) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comprobante`
+--
+
+CREATE TABLE `comprobante` (
+  `comprobante` int(11) NOT NULL,
+  `xml` varchar(255) NOT NULL,
+  `pdf` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cotizacion`
+--
+
+CREATE TABLE `cotizacion` (
+  `cotizacion` int(11) NOT NULL,
+  `fecha` varchar(20) NOT NULL,
+  `total` double NOT NULL,
+  `producto` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `cliente` int(11) NOT NULL,
+  `usuario` int(11) NOT NULL,
+  `condicion` varchar(45) NOT NULL,
+  `tEntrega` varchar(45) NOT NULL,
+  `cotizacionD` char(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cotizacion`
+--
+
+INSERT INTO `cotizacion` (`cotizacion`, `fecha`, `total`, `producto`, `cantidad`, `cliente`, `usuario`, `condicion`, `tEntrega`, `cotizacionD`) VALUES
+(1, '2021-04-25 19:03:24', 18, 130, 1, 2021000004, 2021001, 'Al contando', '2 dÃ­as', '000000001'),
+(2, '2021-04-25 19:03:24', 30, 132, 1, 2021000004, 2021001, 'Al contando', '2 dÃ­as', '000000001'),
+(3, '2021-04-25 19:03:24', 25, 135, 1, 2021000004, 2021001, 'Al contando', '2 dÃ­as', '000000001'),
+(4, '2021-05-03 14:08:13', 18, 130, 1, 2021000005, 2021001, '2 PARTES', '5 dÃ­as', '000000002'),
+(5, '2021-05-03 14:08:13', 360, 133, 1, 2021000005, 2021001, '2 PARTES', '5 dÃ­as', '000000002'),
+(6, '2021-05-03 14:08:13', 36, 131, 1, 2021000005, 2021001, '2 PARTES', '5 dÃ­as', '000000002'),
+(7, '2021-05-06 14:38:31', 72, 131, 2, 2021000006, 2021002, '2 partes', '1 semana', '000000003'),
+(8, '2021-05-06 14:38:31', 42.5, 134, 5, 2021000006, 2021002, '2 partes', '1 semana', '000000003'),
+(9, '2021-05-06 14:38:31', 180, 130, 10, 2021000006, 2021002, '2 partes', '1 semana', '000000003');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cotizaciond`
+--
+
+CREATE TABLE `cotizaciond` (
+  `cotizacionD` char(9) NOT NULL,
+  `cliente` int(11) NOT NULL,
+  `fecha` varchar(20) NOT NULL,
+  `monto` double NOT NULL,
+  `usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cotizaciond`
+--
+
+INSERT INTO `cotizaciond` (`cotizacionD`, `cliente`, `fecha`, `monto`, `usuario`) VALUES
+('000000001', 2021000004, '2021-04-25 19:03:24', 73, 2021001),
+('000000002', 2021000005, '2021-05-03 14:08:13', 414, 2021001),
+('000000003', 2021000006, '2021-05-06 14:38:31', 294.5, 2021002);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `distrito`
+--
+
+CREATE TABLE `distrito` (
+  `distrito` int(11) NOT NULL,
+  `nombreDistrito` varchar(45) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `distrito`
+--
+
+INSERT INTO `distrito` (`distrito`, `nombreDistrito`) VALUES
+(100, 'Ancon'),
+(101, 'Ate Vitarte'),
+(102, 'Barranco'),
+(104, 'Brena'),
+(105, 'Carabayllo'),
+(106, 'Chaclacayo'),
+(107, 'Chorillos'),
+(108, 'Cieneguilla'),
+(109, 'Comas'),
+(110, 'El Agustino'),
+(111, 'Independencia'),
+(112, 'Jesus Maria'),
+(113, 'La Molina'),
+(114, 'La Victoria'),
+(115, 'Lima'),
+(116, 'Lince'),
+(117, 'Los Olivos'),
+(118, 'Lurigancho'),
+(119, 'Lurin'),
+(120, 'Magdalena del Mar'),
+(121, 'Miraflores'),
+(122, 'Pachacamac'),
+(123, 'Pucusana'),
+(124, 'Pueblo Libre'),
+(125, 'Puente Piedra'),
+(126, 'Punta Hermosa'),
+(127, 'Rimac'),
+(128, 'San Bartolo'),
+(129, 'San Borja'),
+(130, 'San Isidro'),
+(131, 'San Juan	de Lurigancho'),
+(132, 'San Juan	de Miraflores'),
+(133, 'San Luis'),
+(134, 'San Martin de Porres'),
+(135, 'San Luis'),
+(136, 'San Miguel'),
+(137, 'Santa Anita'),
+(138, 'Santa Maria del Mar'),
+(139, 'Santa Rosa'),
+(140, 'Santiago de Surco'),
+(141, 'Surquillo'),
+(142, 'Villa El Salvador'),
+(143, 'Villa Maria del Triunfo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `gastos`
+--
+
+CREATE TABLE `gastos` (
+  `gasto` int(11) NOT NULL,
+  `fecha` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `descripcion` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `monto` double DEFAULT NULL,
+  `usuario` int(11) DEFAULT NULL,
+  `ruc` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `nombreEmpresa` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `comprobante` varchar(15) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `gastos`
+--
+
+INSERT INTO `gastos` (`gasto`, `fecha`, `descripcion`, `monto`, `usuario`, `ruc`, `nombreEmpresa`, `comprobante`) VALUES
+(1, '2021-04-26 12:15:48', 'luz', 100, 2021001, '11111', 'enel', '02220'),
+(16, '2021-05-11 23:58:38', 'Compras', 648, 2021001, '111111', '', ''),
+(17, '2021-05-11 23:59:22', 'luz', 10, 2021001, 'Servicios', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `producto`
+--
+
+CREATE TABLE `producto` (
+  `producto` int(11) NOT NULL,
+  `nombreProducto` varchar(100) COLLATE utf8_bin NOT NULL,
+  `unidad` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `precioVenta` double DEFAULT NULL,
+  `precioCompra` double DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `codBarras` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `fechaVencimiento` date DEFAULT NULL,
+  `principioActivo` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `loteProducto` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `codigoDigemid` int(11) DEFAULT NULL,
+  `presentacion` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `fotoProducto` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `categoria_categoria` varchar(45) COLLATE utf8_bin NOT NULL,
+  `proveedor_proveedor` int(11) NOT NULL,
+  `indProducto` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `obsProducto` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `regisProducto` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `preBlisProducto` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`producto`, `nombreProducto`, `unidad`, `precioVenta`, `precioCompra`, `stock`, `codBarras`, `fechaVencimiento`, `principioActivo`, `loteProducto`, `codigoDigemid`, `presentacion`, `fotoProducto`, `categoria_categoria`, `proveedor_proveedor`, `indProducto`, `obsProducto`, `regisProducto`, `preBlisProducto`) VALUES
+(130, 'Wincha Global Plus 1/2X3MT 30-608 ', '', 18, 12, 13, '', '0000-00-00', '', '', 0, 'Wincha negro y amarillo', '422efe7d5e234756c368a35ec18dd875.jpg', '', 10001, '5', '', '', 0),
+(131, 'Alicate universal 200mm', '', 36, 28, 11, '', '0000-00-00', '', '', 0, 'Alicate color rojo', '4d15884cc814fe6622c6410350f4ead5.jpg', '', 10001, '', '', '', 0),
+(132, 'Martillo Vaughan 138-20-E18F', '', 30, 22, 12, '', '0000-00-00', '', '', 0, 'Martillo de carpintero recto', 'e95375f6add56e8f1bed5d11e75dcd73.jpg', '', 10001, '', '', '', 0),
+(133, 'Sierra Profesional 2030W', '', 360, 310, 6, '', '0000-00-00', '', '', 0, 'Sierra electrica', '9e99ff055e859828ff30ed9915a25f57.jpg', '', 10001, '', '', '', 0),
+(134, 'ESPÃTULA 100 mm HELA', '', 8.5, 5.2, 18, '', '0000-00-00', '', '', 0, 'EspÃ¡tula ', '11078101d1ea41d42bc67909da7135ac.jpg', '', 10001, '', '', '', 0),
+(135, 'Madera 3/4 x 2 pulgadas', '', 25, 20, 33, '', '0000-00-00', '', '', 0, 'Madera de roble blanco', '099adc1bae3b6cec7e4e9da89524c305.jpg', '', 10001, '', '', '', 0),
+(136, 'Clavo pequeÃ±o', '', 1, 0.8, 15, '', '0000-00-00', '', '', 0, 'clavo pequeÃ±o', '14adeb6a9d77bf410796e8db0e66c756.jpg', 'clavo', 10002, '', '', '', 0),
+(137, 'Tubo', '', 2, 1.5, 5, '', NULL, '', '', NULL, '', NULL, '', 10001, '', '', '', NULL),
+(139, 'Alicate de Punta', 'pieza', 35, 25, 24, '', '0000-00-00', '', '121', 0, '', 'd81d626e08ff0064d2c54c622cb43e35.jpg', '', 10001, '2', '', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedor`
+--
+
+CREATE TABLE `proveedor` (
+  `proveedor` int(11) NOT NULL,
+  `nombreProveedor` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `direccionProveedor` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `celular` int(11) DEFAULT NULL,
+  `telefono` int(11) DEFAULT NULL,
+  `distrito_distrito` int(11) NOT NULL,
+  `ruc` varchar(11) COLLATE utf8_bin DEFAULT NULL,
+  `razonSocialP` varchar(45) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`proveedor`, `nombreProveedor`, `direccionProveedor`, `celular`, `telefono`, `distrito_distrito`, `ruc`, `razonSocialP`) VALUES
+(10001, 'INCORESA S.A', '', 0, 0, 129, '', ''),
+(10002, 'SOL', '', 0, 0, 137, '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `usuario` int(11) NOT NULL,
+  `nomUsuario` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `contraUsuario` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `estado` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `cargo` varchar(20) COLLATE utf8_bin NOT NULL,
+  `nombreUsu` varchar(45) COLLATE utf8_bin NOT NULL,
+  `apellidoP` varchar(45) COLLATE utf8_bin NOT NULL,
+  `apellidoM` varchar(455) COLLATE utf8_bin NOT NULL,
+  `distrito` int(11) NOT NULL,
+  `direccionUsu` varchar(45) COLLATE utf8_bin NOT NULL,
+  `fechaNacimiento` date NOT NULL,
+  `celular` int(11) NOT NULL,
+  `telefono` int(11) NOT NULL,
+  `genero` varchar(10) COLLATE utf8_bin NOT NULL,
+  `dni` varchar(15) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`usuario`, `nomUsuario`, `contraUsuario`, `estado`, `cargo`, `nombreUsu`, `apellidoP`, `apellidoM`, `distrito`, `direccionUsu`, `fechaNacimiento`, `celular`, `telefono`, `genero`, `dni`) VALUES
+(2021001, 'admin', 'admin', 'Activo', 'Administrador', 'Pepito', 'Lopez', '', 116, '', '0000-00-00', 0, 0, 'Otros', ''),
+(2021002, 'carlos', '123', 'Activo', 'Vendedor', 'Carlos', 'Espinoza', 'Aguirre', 133, '', '2003-07-21', 0, 0, 'Masculino', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venta`
+--
+
+CREATE TABLE `venta` (
+  `nventa` int(11) NOT NULL,
+  `tpVenta` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `fecha` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `estado` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `producto_producto` int(11) NOT NULL,
+  `usuario_usuario` int(11) NOT NULL,
+  `cliente_cliente` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `bfVenta` char(10) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `venta`
+--
+
+INSERT INTO `venta` (`nventa`, `tpVenta`, `fecha`, `estado`, `total`, `producto_producto`, `usuario_usuario`, `cliente_cliente`, `cantidad`, `bfVenta`) VALUES
+(67, 'Ticket', '2021-04-25 21:10:02', 'Efectivo', 25, 135, 2021001, 2021000004, 1, '0000000007'),
+(68, 'Ticket', '2021-04-25 21:15:12', 'Efectivo', 25, 135, 2021001, 2021000004, 1, '0000000008'),
+(69, 'Ticket', '2021-04-25 21:32:20', 'Tarjeta', 18, 130, 2021001, 2021000004, 1, '0000000009'),
+(70, 'Ticket', '2021-04-25 21:36:00', 'Tarjeta', 36, 130, 2021001, 2021000004, 2, '0000000010'),
+(71, 'Ticket', '2021-04-25 21:49:04', 'Efectivo', 72, 131, 2021001, 2021000004, 2, '0000000011'),
+(72, 'Ticket', '2021-05-06 14:21:12', 'Efectivo', 18, 130, 2021001, 2021000004, 1, '0000000012'),
+(73, 'Boleta', '2021-05-06 14:24:11', 'Efectivo', 72, 131, 2021001, 2021000005, 2, '0000000013'),
+(74, 'Boleta', '2021-05-06 14:24:11', 'Efectivo', 8.5, 134, 2021001, 2021000005, 1, '0000000013'),
+(75, 'Factura', '2021-05-06 14:25:55', 'Tarjeta', 30, 132, 2021001, 2021000006, 1, '0000000014'),
+(76, 'Ticket', '2021-05-06 16:18:33', 'Pendiente', 35, 139, 2021001, 2021000004, 1, '0000000015'),
+(77, 'Ticket', '2021-05-06 16:18:33', 'Pendiente', 72, 131, 2021001, 2021000004, 2, '0000000015'),
+(78, 'Ticket', '2021-05-11 21:17:42', 'Efectivo', 18, 130, 2021001, 2021000004, 1, '0000000016');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `almacen`
+--
+ALTER TABLE `almacen`
+  ADD PRIMARY KEY (`almacen`);
+
+--
+-- Indices de la tabla `bfcompra`
+--
+ALTER TABLE `bfcompra`
+  ADD PRIMARY KEY (`bfCompra`);
+
+--
+-- Indices de la tabla `bfventa`
+--
+ALTER TABLE `bfventa`
+  ADD PRIMARY KEY (`bfVenta`);
+
+--
+-- Indices de la tabla `cajachica`
+--
+ALTER TABLE `cajachica`
+  ADD PRIMARY KEY (`cajaChica`);
+
+--
+-- Indices de la tabla `cliente`
+--
+ALTER TABLE `cliente`
+  ADD PRIMARY KEY (`cliente`);
+
+--
+-- Indices de la tabla `compra`
+--
+ALTER TABLE `compra`
+  ADD PRIMARY KEY (`ncompra`);
+
+--
+-- Indices de la tabla `comprobante`
+--
+ALTER TABLE `comprobante`
+  ADD PRIMARY KEY (`comprobante`);
+
+--
+-- Indices de la tabla `cotizacion`
+--
+ALTER TABLE `cotizacion`
+  ADD PRIMARY KEY (`cotizacion`);
+
+--
+-- Indices de la tabla `cotizaciond`
+--
+ALTER TABLE `cotizaciond`
+  ADD PRIMARY KEY (`cotizacionD`);
+
+--
+-- Indices de la tabla `distrito`
+--
+ALTER TABLE `distrito`
+  ADD PRIMARY KEY (`distrito`);
+
+--
+-- Indices de la tabla `gastos`
+--
+ALTER TABLE `gastos`
+  ADD PRIMARY KEY (`gasto`);
+
+--
+-- Indices de la tabla `producto`
+--
+ALTER TABLE `producto`
+  ADD PRIMARY KEY (`producto`);
+
+--
+-- Indices de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  ADD PRIMARY KEY (`proveedor`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`usuario`);
+
+--
+-- Indices de la tabla `venta`
+--
+ALTER TABLE `venta`
+  ADD PRIMARY KEY (`nventa`),
+  ADD KEY `FK_VentaDetallee` (`bfVenta`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `almacen`
+--
+ALTER TABLE `almacen`
+  MODIFY `almacen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+
+--
+-- AUTO_INCREMENT de la tabla `cajachica`
+--
+ALTER TABLE `cajachica`
+  MODIFY `cajaChica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `cliente`
+--
+ALTER TABLE `cliente`
+  MODIFY `cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2021000007;
+
+--
+-- AUTO_INCREMENT de la tabla `compra`
+--
+ALTER TABLE `compra`
+  MODIFY `ncompra` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `cotizacion`
+--
+ALTER TABLE `cotizacion`
+  MODIFY `cotizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `gastos`
+--
+ALTER TABLE `gastos`
+  MODIFY `gasto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de la tabla `producto`
+--
+ALTER TABLE `producto`
+  MODIFY `producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+
+--
+-- AUTO_INCREMENT de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  MODIFY `proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10003;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2021003;
+
+--
+-- AUTO_INCREMENT de la tabla `venta`
+--
+ALTER TABLE `venta`
+  MODIFY `nventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
